@@ -1,7 +1,7 @@
-version: '3.9'
 services:
   mysql:
-    image: latest
+    image: mysql:8.0
+    platform: linux/arm64/v8
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: wordpress
@@ -15,23 +15,25 @@ services:
 
   wordpress:
     image: wordpress:latest
+    platform: linux/arm64/v8
     restart: always
     environment:
-    WORDPRESS_DB_HOST: mysql:3306
-    WORDPRESS_DB_USER: wordpress
-    WORDPRESS_DB_PASSWORD: wordpress
-    WORDPRESS_DB_NAME: gamestore
-  ports:
-    - "8000:80"
-  volumes:
-    - ./.srv/wordpress:/var/www/html  
-  depends_on:
-    - mysql  
-  links:
-    - mysql:mysql
+      WORDPRESS_DB_HOST: mysql:3306
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_NAME: gamestore
+    ports:
+      - "8000:80"
+    volumes:
+      - ./.srv/wordpress:/var/www/html
+    depends_on:
+      - mysql
+    links:
+      - mysql:mysql
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
+    platform: linux/amd64
     environment: 
       MYSQL_USERNAME: wordpress
       MYSQL_ROOT_PASSWORD: wordpress
